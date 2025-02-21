@@ -114,6 +114,85 @@ if ($type == "create") {
     $message->setMessage("Filme não encontrado!", "error", "index.php");
   }
 
+} else if ($type === "update") {
+
+  // Receber os dados dos inputs
+  $title = filter_input(INPUT_POST,"title");
+  $length = filter_input(INPUT_POST,"length");
+  $category = filter_input(INPUT_POST,"category");
+  $trailer = filter_input(INPUT_POST,"trailer");
+  $description = filter_input(INPUT_POST,"description");
+  $id = filter_input(INPUT_POST,"id");
+
+  $movieData = $movieDAO->findById($id);
+
+  if($movieData) {
+
+    // Verificar se o filme é do usuário
+    if($movieData->users_id === $userData->id) {
+
+      if(!empty($title) && !empty($category) && !empty($description)) {
+
+        $movieData->title = $title;
+        $movieData->length = $length;
+        $movieData->category = $category;
+        $movieData->trailer = $trailer;
+        $movieData->description = $description;
+
+        // Upload de imagem do filme
+        if(isset($_FILES["image"]) && !empty($_FILES["image"]["tmp_name"])) {
+
+          $image = $_FILES["image"];
+          $imageTypes = ["image/jpeg", "image/jpg", "image/png"]; //tipos de imagens permitidas
+          $jpgArray = ["image/jpeg", "image/jpg"];
+
+          if(in_array($image["type"], $imageTypes)) {
+
+            // Checar se é jpg
+            if(in_array($image["type"], $jpgArray)) {
+
+              $imageFile = imagecreatefromjpeg($image["tmp_name"]);
+
+            // É png
+            } else {
+
+            $imageFile = imagecreatefrompng($image["tmp_name"]);
+
+            }
+
+            // Gerar o nome da imagem
+            $imageName = $movieData->imageGenerateName();
+
+            // Salvar a imagem no servidor
+            imagejpeg($imageFile, "./img/movies/" . $imageName, 100);
+
+            $movieData->image = $imageName;
+
+          } else {
+
+          // Enviar uma msg de erro, de imagem inválida
+          $message->setMessage("Tipo inválido de imagem, insira png ou jpg!", "error", "back");
+          }
+      
+        }  
+
+        $movieDAO->update($movieData);
+        
+      } else {
+
+        // Enviar uma msg de erro, de falta de informações mínimas
+        $message->setMessage("Você precisa adicionar pelo menos: título, descrição e categoria.", "error", "back");
+      }
+
+      
+    }
+
+  } else {
+
+    // Enviar uma msg de erro
+    $message->setMessage("Filme não encontrado!", "error", "index.php");
+  }
+
 } else {
 
   // Enviar uma msg de erro, de informações inválidas (type não válido)

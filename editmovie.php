@@ -35,15 +35,20 @@ if(empty($id)) {
 
 }
 
+// Chegar se o filme tem imagem
+if(empty($movie->image)) {
+  $movie->image = "movie_cover.jpg"; //coloca a imagem padrao
+}
+
 ?>
 
 <div id="main-container" class="container-fluid">
   <div class="col-md-12">
     <div class="row">
-      <div class="col-md-6 offset-md-1">
+      <div class="col-md-4 offset-md-2">
         <h1><?php echo $movie->title; ?></h1>
-        <p id="edit-movie-form" class="page-description">Altere os dados do filme no formulário abaixo:</p>
-        <form action="<?php echo $BASE_URL; ?>movie_process.php" method="POST" enctype="multipart/form-data">
+        <p class="page-description">Altere os dados do filme no formulário abaixo:</p>
+        <form action="<?php echo $BASE_URL; ?>movie_process.php" id="edit-movie-form" method="POST" enctype="multipart/form-data">
           <input type="hidden" name="type" value="update">
           <input type="hidden" name="id" value="<?php echo $movie->id; ?>">
           <div class="mb-3">
@@ -62,25 +67,28 @@ if(empty($id)) {
             <label for="category" class="form-label">Categoria:</label>
             <select name="category" id="category" class="form-control">
               <option value="">Selecione</option>
-              <option value="Ação <?php echo $movie->category === "Ação" ? "selected" : ""; ?>">Ação</option>
-              <option value="Comédia <?php echo $movie->category === "Comédia" ? "selected" : ""; ?>">Comédia</option>
-              <option value="Drama <?php echo $movie->category === "Drama" ? "selected" : ""; ?>">Drama</option>
-              <option value="Fantasia / Ficção <?php echo $movie->category === "Fantasia / Ficção" ? "selected" : ""; ?>">Fantasia / Ficção</option>
-              <option value="Romance <?php echo $movie->category === "Romance" ? "selected" : ""; ?>">Romance</option>
-              <option value="Suspense <?php echo $movie->category === "Suspense" ? "selected" : ""; ?>">Suspense</option>
+              <option value="Ação" <?php echo $movie->category === "Ação" ? "selected" : ""; ?>>Ação</option>
+              <option value="Comédia" <?php echo $movie->category === "Comédia" ? "selected" : ""; ?>>Comédia</option>
+              <option value="Drama" <?php echo $movie->category === "Drama" ? "selected" : ""; ?>>Drama</option>
+              <option value="Fantasia / Ficção" <?php echo $movie->category === "Fantasia / Ficção" ? "selected" : ""; ?>>Fantasia / Ficção</option>
+              <option value="Romance" <?php echo $movie->category === "Romance" ? "selected" : ""; ?>>Romance</option>
+              <option value="Suspense" <?php echo $movie->category === "Suspense" ? "selected" : ""; ?>>Suspense</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="trailer" class="form-label">Trailer:</label>
-            <input type="text" class="form-control" id="trailer" name="trailer" placeholder="Insira o link do trailer">
+            <input type="text" class="form-control" id="trailer" name="trailer" placeholder="Insira o link do trailer" value="<?php echo $movie->trailer; ?>">
           </div>
           <div class="mb-3">
             <label for="description" class="form-label">Descrição:</label>
             <textarea name="description" id="description" rows="5" class="form-control"
-              placeholder="Descreva o filme..."></textarea>
+              placeholder="Descreva o filme..."><?php echo $movie->description; ?></textarea>
           </div>
-          <input type="submit" class="btn card-btn" value="Adicionar filme">
+          <input type="submit" class="btn card-btn" value="Editar filme">
         </form>
+      </div>
+      <div class="col-md-3">
+        <div class="movie-image-container" style="background-image: url('<?php echo $BASE_URL; ?>img/movies/<?php echo $movie->image; ?>')"></div>
       </div>
     </div>
   </div>

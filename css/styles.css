@@ -230,7 +230,8 @@
 
 .edit-profile-page .card-btn,
 #add-movie-container .card-btn,
-#review-form .card-btn {
+#review-form .card-btn,
+#edit-movie-form .card-btn {
   width: auto;
 }
 
@@ -245,7 +246,7 @@
 
 .movie-image-container {
   height: 400px;
-  max-width: 200px;
+  max-width: 300px;
   background-position: center;
   background-size: cover;
 }
@@ -259,7 +260,7 @@
   padding-top: 7px;
 }
 
-/* New Movie */
+/* Movie */
 .movie-container {
   text-align: center;
 }
