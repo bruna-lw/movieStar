@@ -6,7 +6,7 @@ require_once("models/User.php");
 require_once("dao/userDAO.php");
 
 $user = new User();
-$userDao = new UserDAO($conn, $BASE_URL);
+$userDAO = new UserDAO($conn, $BASE_URL);
 
 require_once("dao/movieDAO.php");
 $movieDAO = new MovieDAO($conn, $BASE_URL);
