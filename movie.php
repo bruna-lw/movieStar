@@ -54,9 +54,6 @@ if(!empty($userData)) {
 // Resgatar as reviews do filme
 $movieReviews = $reviewDAO->getMoviesReview($id);
 
-
-
-
 ?>
 
 <div id="main-container" class="container-fluid">

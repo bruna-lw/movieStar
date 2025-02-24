@@ -27,7 +27,7 @@ interface MovieDAOInterface {
   public function getMovieByCategory($category);
   public function getMovieByUserId($id);
   public function findById($id);
-  public function findByTitle();
+  public function findByTitle($title);
   public function create(Movie $movie);
   public function update(Movie $movie);
   public function destroy($id);
