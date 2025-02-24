@@ -3,6 +3,7 @@ include_once("templates/header.php");
 
 require_once("models/Movie.php");
 require_once("dao/movieDAO.php");
+require_once("dao/reviewDAO.php");
 
 // Pega o id do filme
 $id = filter_input(INPUT_GET,"id");
@@ -10,6 +11,7 @@ $id = filter_input(INPUT_GET,"id");
 $movie;
 
 $movieDAO = new MovieDAO($conn, $BASE_URL);
+$reviewDAO = new ReviewDAO($conn, $BASE_URL);
 
 if(empty($id)) {
 
@@ -43,10 +45,17 @@ if(!empty($userData)) {
 
     $userOwnsMovie = true;
   }
+
+  // Verificar se o usuário da fez a review
+  $alreadyReviwed = $reviewDAO->hasAlreadyReviewed($id, $userData->id);
+
 }
 
 // Resgatar as reviews do filme
-$alreadyReviwed = false;
+$movieReviews = $reviewDAO->getMoviesReview($id);
+
+
+
 
 ?>
 
@@ -59,7 +68,7 @@ $alreadyReviwed = false;
         <span class="pipe"></span>
         <span><?php echo $movie->category; ?></span>
         <span class="pipe"></span>
-        <span><i class="fas fa-star"></i> 9</span>
+        <span><i class="fas fa-star"></i><?php echo $movie->rating; ?></span>
       </p>
       <iframe src="<?php echo $movie->trailer; ?>" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       <p><?php echo $movie->description; ?></p>
@@ -97,28 +106,17 @@ $alreadyReviwed = false;
             <label for="review" class="form-label">Seu comentário:</label>
             <textarea name="review" id="review" rows="3" class="form-control" placeholder="O que você achou do filme?"></textarea>
           </div>
-          <input type="submite" class="btn card-btn" value="Enviar comentário">
+          <input type="submit" class="btn card-btn" value="Enviar comentário">
         </form>
       </div>
       <?php endif; ?>
       <!-- Comentários -->
-      <div class="col-md-12 review">
-        <div class="row">
-          <div class="col-md-1">
-            <div class="profile-image-container review-image" style="background-image: url('<?php echo $BASE_URL ?>img/users/user.png')"></div>
-          </div>
-          <div class="col-md-9 author-details-container">
-            <h4 class="author-name">
-              <a href="#">Bruna Teste</a>
-            </h4>
-            <p><i class="fas fa-star"></i> 9</p>
-          </div>
-          <div class="col-md-12">
-            <p class="comment-title">Comentário:</p>
-            <p>Este é o comentário do usuário</p>
-          </div>
-        </div>
-      </div>
+      <?php foreach($movieReviews as $review): ?>
+        <?php require("templates/user_review.php"); ?>
+      <?php endforeach; ?>
+      <?php if(count($movieReviews) == 0): ?>
+        <p class="empty-list">Não há comentários para este filme ainda.</p>
+      <?php endif; ?>
     </div>
   </div>
 </div>

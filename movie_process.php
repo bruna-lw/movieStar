@@ -8,9 +8,7 @@ require_once("dao/userDAO.php");
 require_once("dao/movieDAO.php");
 
 $message = new Message($BASE_URL);
-
 $userDAO = new UserDAO($conn, $BASE_URL);
-
 $movieDAO = new MovieDAO($conn, $BASE_URL);
 
 

@@ -11,7 +11,7 @@ if(empty($movie->image)) {
   <div class="card-body">
     <p class="card-rating">
       <i class="fas fa-star"></i>
-      <span class="rating">9</span>
+      <span class="rating"><?php echo $movie->rating; ?></span>
     </p>
     <h5 class="card-title">
       <a href="<?php echo $BASE_URL; ?>movie.php?id=<?php echo $movie->id; ?>"><?php echo $movie->title; ?></a>

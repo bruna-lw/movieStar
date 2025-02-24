@@ -38,7 +38,7 @@ $userMovies = $movieDAO->getMovieByUserId($userData->id);
         <tr>
           <td scope="row"><?php echo $movie->id; ?></td>
           <td><a href="<?php echo $BASE_URL; ?>movie.php?id=<?php echo $movie->id; ?>" class="table-movie-title"><?php echo $movie->title; ?></a></td>
-          <td><i class="fas fa-star"></i>9</td>
+          <td><i class="fas fa-star"></i><?php echo $movie->rating; ?></td>
           <td class="actions-column">
             <a href="<?php echo $BASE_URL; ?>editmovie.php?id=<?php echo $movie->id; ?>" class="edit-btn">
               <i class="far fa-edit"></i> Editar
